@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  hive-db:
+    image: postgres:14.5
+    environment:
+      - POSTGRES_USER=hive_user
+      - POSTGRES_PASSWORD=hive_pass
+      - POSTGRES_DB=hive
+    ports:
+      - '5432:5432'
+    volumes:
+      - hive-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hive_user -d hive "]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+  hive-metastore:
+    build: ../hive
+    image: hive
+    ports:
+      - '9083:9083'
+    depends_on:
+      hive-db:
+        condition: service_healthy
+volumes:
+  hive-data: {}

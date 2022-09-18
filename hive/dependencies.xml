@@ -1,0 +1,8 @@
+<ivy-module version="2.0">
+    <info organisation="org" module="hive" />
+    <dependencies>
+        <dependency org="org.postgresql" name="postgresql" rev="42.5.0" />
+        <dependency org="org.apache.hadoop" name="hadoop-client" rev="3.1.2" />
+        <dependency org="org.apache.hadoop" name="hadoop-aws" rev="3.1.2" />
+    </dependencies>
+</ivy-module>
