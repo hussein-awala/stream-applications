@@ -1,0 +1,31 @@
+{
+  "type":"record",
+  "name":"Topic2",
+  "namespace":"com.spark.stream",
+  "doc":"Sample schema to test spark structered streaming.",
+  "fields":[
+    {
+      "name":"col1",
+      "type":{
+        "type":"int",
+        "logicalType":"date"
+      },
+      "doc":"timestamp col",
+      "arg.properties": {
+        "range": {
+          "min": 0,
+        }
+      }
+    },
+    {
+      "name":"col2",
+      "type":"double",
+      "doc":"double col."
+    },
+    {
+      "name":"col3",
+      "type":"string",
+      "doc":"string col"
+    }
+  ]
+}

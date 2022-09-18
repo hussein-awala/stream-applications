@@ -1,0 +1,42 @@
+plugins {
+    id "java"
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://packages.confluent.io/maven"
+    }
+}
+
+def scalaVersion = "2.12"
+def sparkVersion = "3.3.0"
+def hadoopVersion = "3.1.2"
+def hudiVersion = "0.12.0"
+
+dependencies {
+    // spark
+    implementation group: "org.apache.spark", name: "spark-core_${scalaVersion}", version: sparkVersion
+    implementation group: "org.apache.spark", name: "spark-sql_${scalaVersion}", version: sparkVersion
+    // spark kafka structured stream
+    implementation group: "org.apache.spark", name: "spark-sql-kafka-0-10_${scalaVersion}", version: sparkVersion
+    // apache hudi
+    implementation group: "org.apache.hudi", name: "hudi-spark3.3-bundle_${scalaVersion}", version: hudiVersion
+    // hadoop S3
+    implementation group: "org.apache.hadoop", name: "hadoop-common", version: hadoopVersion
+    implementation group: "org.apache.hadoop", name: "hadoop-aws", version: hadoopVersion
+    // avro
+    implementation group: "org.apache.spark", name: "spark-avro_${scalaVersion}", version: sparkVersion
+    // confluent
+    implementation group: "io.confluent", name: "kafka-schema-registry-client", version: "5.3.0"
+    implementation group: "io.confluent", name: "kafka-avro-serializer", version: "5.3.0"
+    // csv
+    implementation group: "com.opencsv", name: "opencsv", version: "5.3"
+
+    // junit for testing
+    testImplementation "junit:junit:4.13"
+}
+
+test {
+    useJUnitPlatform()
+}

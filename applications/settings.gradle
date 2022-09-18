@@ -1,0 +1,2 @@
+rootProject.name = 'spark-applications'
+include('streamers')
