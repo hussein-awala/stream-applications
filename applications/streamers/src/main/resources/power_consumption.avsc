@@ -2,41 +2,79 @@
   "type": "record",
   "name": "powerConsumptionRecord",
   "namespace": "spark.stream",
-  "fields": [{
-    "name": "Date",
-    "type": ["null", "string"],
-    "default": null
-  }, {
-    "name": "Global_active_power",
-    "type": ["null", "double"],
-    "default": null
-  }, {
-    "name": "Global_intensity",
-    "type": ["null", "double", "int"],
-    "default": null
-  }, {
-    "name": "Global_reactive_power",
-    "type": ["null", "double"],
-    "default": null
-  }, {
-    "name": "Sub_metering_1",
-    "type": ["null", "double"],
-    "default": null
-  }, {
-    "name": "Sub_metering_2",
-    "type": ["null", "double"],
-    "default": null
-  }, {
-    "name": "Sub_metering_3",
-    "type": ["null", "double"],
-    "default": null
-  }, {
-    "name": "Time",
-    "type": ["null", "string"],
-    "default": null
-  }, {
-    "name": "Voltage",
-    "type": ["null", "double"],
-    "default": null
-  }]
+  "fields": [
+    {
+      "name": "Date",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "Global_active_power",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "Global_intensity",
+      "type": [
+        "null",
+        "double",
+        "int"
+      ],
+      "default": null
+    },
+    {
+      "name": "Global_reactive_power",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "Sub_metering_1",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "Sub_metering_2",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "Sub_metering_3",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    },
+    {
+      "name": "Time",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "Voltage",
+      "type": [
+        "null",
+        "double"
+      ],
+      "default": null
+    }
+  ]
 }

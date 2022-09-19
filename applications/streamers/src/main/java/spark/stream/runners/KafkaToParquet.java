@@ -9,12 +9,13 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.apache.spark.sql.streaming.Trigger;
 import spark.stream.utils.PowerConsumptionLoader;
+
 import java.io.IOException;
 
 
 public class KafkaToParquet {
     public static void main(String[] args) throws StreamingQueryException, RestClientException, IOException {
-        SparkConf sparkConf = new SparkConfBuilder("Kafka Stream to Hudi","local[1]" )
+        SparkConf sparkConf = new SparkConfBuilder("Kafka Stream to Hudi", "local[1]")
                 .addS3Conf()
                 .build();
 

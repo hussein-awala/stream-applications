@@ -6,10 +6,11 @@ package spark.streamer;
 import org.junit.Test;
 import spark.stream.runners.KafkaToConsole;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class AppTest {
-    @Test public void testAppHasAGreeting() {
+    @Test
+    public void testAppHasAGreeting() {
         KafkaToConsole classUnderTest = new KafkaToConsole();
         assertNotNull("app should have a greeting", classUnderTest.toString());
     }
