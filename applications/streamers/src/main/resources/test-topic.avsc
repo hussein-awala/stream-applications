@@ -13,7 +13,7 @@
       "doc": "timestamp col",
       "arg.properties": {
         "range": {
-          "min": 0,
+          "min": 0
         }
       }
     },
