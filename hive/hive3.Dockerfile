@@ -13,7 +13,7 @@ RUN curl -L https://downloads.apache.org/hive/hive-standalone-metastore-${METAST
 
 COPY metastore-site.xml ${HIVE_HOME}/conf
 
-COPY entrypoint.sh /entrypoint.sh
+COPY hive3/entrypoint.sh /entrypoint.sh
 
 COPY dependencies.xml /dependencies.xml
 
