@@ -69,8 +69,8 @@ public class SparkConfBuilder {
 
     public SparkConfBuilder addHiveConf() {
         if (this.hiveConfFlag) return this;
-        this.conf.add(new Tuple2<>("spark.sql.uris", "thrift://localhost:9083"));
-        this.conf.add(new Tuple2<>("spark.sql.warehouse.dir", "s3a://spark/hive"));
+        this.conf.add(new Tuple2<>("hive.metastore.uris", "thrift://localhost:9083"));
+        this.conf.add(new Tuple2<>("hive.sql.warehouse.dir", "s3a://spark/hive"));
         this.hiveConfFlag = true;
         // auto add S3 conf when hive conf is added
         return this.addS3Conf();
