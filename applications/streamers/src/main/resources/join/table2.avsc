@@ -1,0 +1,40 @@
+{
+  "type": "record",
+  "name": "table2",
+  "namespace": "com.spark.stream.join",
+  "doc": "Sample schema to test spark structured streaming join.",
+  "fields": [
+    {
+      "name": "event_timestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "date",
+        "arg.properties": {
+          "range": {
+            "min": 1577836800000,
+            "max": 1640995200000
+          }
+        }
+      },
+      "doc": "timestamp for the event: between 1 Jan 2020 and 1 Jan 2022"
+    },
+    {
+      "name": "user_id",
+      "type": {
+        "type": "int",
+        "arg.properties": {
+          "range": {
+            "min": 1,
+            "max": 1000
+          }
+        }
+      },
+      "doc": "the user id which we will use to merge the data"
+    },
+    {
+      "name": "feature2",
+      "type": "double",
+      "doc": "simulation for a value changed by the user"
+    }
+  ]
+}
