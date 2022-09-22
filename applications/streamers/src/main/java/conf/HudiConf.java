@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class HudiConf {
 
-    public static Map<String, String> createHudiConf(String hudiTableName, String keyFields, String precombineField, String partitionFields){
+    public static Map<String, String> createHudiConf(String hudiTableName, String keyFields, String precombineField, String partitionFields) {
         Map<String, String> hudiTableOptions = new HashMap<>();
         hudiTableOptions.put("hoodie.insert.shuffle.parallelism", "2");
         hudiTableOptions.put("hoodie.upsert.shuffle.parallelism", "2");
