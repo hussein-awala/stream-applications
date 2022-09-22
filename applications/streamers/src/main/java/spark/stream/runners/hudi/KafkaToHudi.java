@@ -1,4 +1,4 @@
-package spark.stream.runners;
+package spark.stream.runners.hudi;
 
 import conf.HudiConf;
 import conf.SparkConfBuilder;
