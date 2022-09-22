@@ -1,14 +1,15 @@
 package avro;
 
+import io.confluent.avro.random.generator.Generator;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericRecord;
-import org.apache.avro.util.RandomData;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.Random;
 
@@ -38,19 +39,19 @@ public class MessageFakerRunnable implements Runnable {
         this.schema = schema;
     }
 
-    private Schema loadSchemaFromPath() throws ClassNotFoundException, IOException {
+    private File loadSchemaFile() throws URISyntaxException {
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream is = classLoader.getResourceAsStream(this.schemaPath);
-        Schema schema = new Schema.Parser().parse(is);
-        return schema;
+        return new File(classLoader.getResource(this.schemaPath).toURI());
     }
 
     public void run() {
         try {
-            Schema schema = this.schema;
-            if (schema == null) {
+            Generator messagesGenerator;
+            if (this.schema != null) {
+                messagesGenerator = new Generator.Builder().schema(this.schema).build();
+            } else {
                 if (this.schemaPath != null) {
-                    schema = this.loadSchemaFromPath();
+                    messagesGenerator = new Generator.Builder().schemaFile(this.loadSchemaFile()).build();
                 } else {
                     throw new RuntimeException("One of schema or schema file path should be provided");
                 }
@@ -66,13 +67,15 @@ public class MessageFakerRunnable implements Runnable {
             Random rn = new Random();
             for (int i = 0; i < this.nbBatchs; i++) {
                 System.out.printf("Topic %s, batch: %s%n", this.topicName, i);
-                for (Object value : new RandomData(schema, this.batchSize)) {
-                    final ProducerRecord<String, GenericRecord> record = new ProducerRecord<>(this.topicName, String.valueOf(rn.nextInt(1000)), (GenericRecord) value);
+                messagesGenerator.generate();
+                for (int j = 0; j < this.batchSize; j++) {
+                    Object message = messagesGenerator.generate();
+                    final ProducerRecord<String, GenericRecord> record = new ProducerRecord<>(this.topicName, String.valueOf(rn.nextInt(1000)), (GenericRecord) message);
                     producer.send(record);
                 }
                 Thread.sleep(waitSeconds * 1000);
             }
-        } catch (ClassNotFoundException | IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }

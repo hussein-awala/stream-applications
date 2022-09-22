@@ -7,15 +7,15 @@
     {
       "name": "col1",
       "type": {
-        "type": "int",
-        "logicalType": "date"
+        "type": "long",
+        "logicalType": "date",
+        "arg.properties": {
+          "range": {
+            "min": 0
+          }
+        }
       },
       "doc": "timestamp col",
-      "arg.properties": {
-        "range": {
-          "min": 0
-        }
-      }
     },
     {
       "name": "col2",
