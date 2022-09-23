@@ -11,7 +11,6 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.functions;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.apache.spark.sql.streaming.Trigger;
-import spark.stream.utils.PowerConsumptionLoader;
 
 import java.io.IOException;
 import java.util.Map;
@@ -42,7 +41,7 @@ public class StreamJoinToHudi {
         String valueSchema1Str = schemaRegistry.getLatestVersion(subject1ValueName).getSchema();
         String valueSchema2Str = schemaRegistry.getLatestVersion(subject2ValueName).getSchema();
 
-        Dataset<Row> df1 =  spark
+        Dataset<Row> df1 = spark
                 .readStream()
                 .format("kafka")
                 .option("kafka.bootstrap.servers", "localhost:9092")
@@ -54,7 +53,7 @@ public class StreamJoinToHudi {
                 )
                 .select("value.*");
 
-        Dataset<Row> df2 =  spark
+        Dataset<Row> df2 = spark
                 .readStream()
                 .format("kafka")
                 .option("kafka.bootstrap.servers", "localhost:9092")
@@ -73,7 +72,7 @@ public class StreamJoinToHudi {
                         functions.when(df1.col("user_id").isNotNull(), df1.col("user_id")).otherwise(df2.col("user_id")).alias("user_id"),
                         df1.col("feature1"),
                         df2.col("feature2")
-                    );
+                );
         String hudiTableName = "joined-table-stream";
         String hudiTablePath = String.format("s3a://spark/data/hudi/%s", hudiTableName);
 
