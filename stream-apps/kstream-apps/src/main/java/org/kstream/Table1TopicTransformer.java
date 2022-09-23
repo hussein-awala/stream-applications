@@ -1,4 +1,4 @@
-package spark.stream.runners.kstrems;
+package org.kstream;
 
 import io.confluent.kafka.streams.serdes.avro.GenericAvroSerde;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;
@@ -20,7 +20,7 @@ import java.util.Properties;
 
 public class Table1TopicTransformer {
 
-    private static final Logger logger = LogManager.getLogger("KStream");
+    private static final Logger logger = LogManager.getLogger(Table1TopicTransformer.class);
     private static String schemaRegistryUrl = "http://localhost:8081";
 
     public static void main(String[] args) {
@@ -61,7 +61,7 @@ public class Table1TopicTransformer {
                     s.put("feature1", feature1 * 1000);
                     return s;
                 })
-                .peek((k, v) -> logger.info("Transformed event: {}", v))
+                .peek((k, v) -> logger.error("Transformed event: {}", v))
                 .to(outputTopic, Produced.with(keyStringSerde, valueGenericAvroSerde));
 
         return builder.build();
