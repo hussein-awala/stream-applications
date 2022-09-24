@@ -1,0 +1,37 @@
+{
+  "type": "record",
+  "name": "joinedTopic",
+  "namespace": "org.stream.kstream",
+  "doc": "Sample schema to test kstream join.",
+  "fields": [
+    {
+      "name": "event_timestamp",
+      "type": {
+        "type": "long",
+        "logicalType": "date"
+      },
+      "doc": "timestamp for the event: between 1 Jan 2020 and 1 Jan 2022"
+    },
+    {
+      "name": "user_id",
+      "type": "int",
+      "doc": "the user id which we will use to merge the data"
+    },
+    {
+      "name": "feature1",
+      "type": [
+        "null",
+        "double"
+      ],
+      "doc": "simulation for a value changed by the user"
+    },
+    {
+      "name": "feature2",
+      "type": [
+        "null",
+        "double"
+      ],
+      "doc": "simulation for a value changed by the user"
+    }
+  ]
+}
