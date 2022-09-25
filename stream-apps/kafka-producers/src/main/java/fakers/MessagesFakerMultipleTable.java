@@ -1,4 +1,4 @@
-package avro;
+package fakers;
 
 public class MessagesFakerMultipleTable {
     public static void main(String[] args) {

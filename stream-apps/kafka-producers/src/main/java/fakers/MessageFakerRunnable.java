@@ -1,4 +1,4 @@
-package avro;
+package fakers;
 
 import io.confluent.avro.random.generator.Generator;
 import org.apache.avro.Schema;

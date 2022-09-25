@@ -1,4 +1,4 @@
-package org.kstream;
+package kstreams;
 
 import io.confluent.kafka.streams.serdes.avro.GenericAvroSerde;
 import io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde;

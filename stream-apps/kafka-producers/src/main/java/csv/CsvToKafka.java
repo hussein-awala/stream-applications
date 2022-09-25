@@ -1,4 +1,4 @@
-package avro;
+package csv;
 
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -18,11 +18,11 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Properties;
 
-public class CsvMessages {
+public class CsvToKafka {
     public static void main(String[] args) throws IOException, CsvException {
         String topicName = "power-consumption";
 
-        CsvMessages csvMessages = new CsvMessages();
+        CsvToKafka csvMessages = new CsvToKafka();
         ClassLoader classLoader = csvMessages.getClass().getClassLoader();
         InputStream schemaInputStream = classLoader.getResourceAsStream("power_consumption.avsc");
         Schema schema = new Schema.Parser().parse(schemaInputStream);

@@ -1,0 +1,31 @@
+plugins {
+    id "java"
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://packages.confluent.io/maven"
+    }
+}
+
+dependencies {
+    // confluent
+    implementation group: "io.confluent", name: "kafka-schema-registry-client", version: "5.3.0"
+    implementation group: "io.confluent", name: "kafka-avro-serializer", version: "5.3.0"
+    implementation group: 'io.confluent', name: 'kafka-streams-avro-serde', version: '7.2.1'
+    implementation group: "io.confluent.avro", name: "avro-random-generator", version: "0.4.1"
+    implementation group: "org.apache.kafka", name: "kafka-streams", version: "3.1.0"
+
+    // csv
+    implementation group: "com.opencsv", name: "opencsv", version: "5.3"
+
+    // junit for testing
+    testImplementation "junit:junit:4.13"
+    // confluent for testing
+    testImplementation group: "org.apache.kafka", name: "kafka-streams-test-utils", version: "3.1.0"
+}
+
+test {
+    useJUnitPlatform()
+}
