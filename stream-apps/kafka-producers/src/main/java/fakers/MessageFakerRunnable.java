@@ -9,6 +9,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.Random;
@@ -39,9 +40,9 @@ public class MessageFakerRunnable implements Runnable {
         this.schema = schema;
     }
 
-    private File loadSchemaFile() throws URISyntaxException {
+    private InputStream loadSchemaFile() throws URISyntaxException {
         ClassLoader classLoader = getClass().getClassLoader();
-        return new File(classLoader.getResource(this.schemaPath).toURI());
+        return classLoader.getResourceAsStream(this.schemaPath);
     }
 
     public void run() {
@@ -51,7 +52,7 @@ public class MessageFakerRunnable implements Runnable {
                 messagesGenerator = new Generator.Builder().schema(this.schema).build();
             } else {
                 if (this.schemaPath != null) {
-                    messagesGenerator = new Generator.Builder().schemaFile(this.loadSchemaFile()).build();
+                    messagesGenerator = new Generator.Builder().schemaStream(this.loadSchemaFile()).build();
                 } else {
                     throw new RuntimeException("One of schema or schema file path should be provided");
                 }
