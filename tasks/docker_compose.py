@@ -1,4 +1,5 @@
-from invoke import task, Collection
+from invoke import Collection, task
+
 from .utils import docker_compose_command
 
 
@@ -16,7 +17,9 @@ def up(ctx, version=2):
 
 @task
 def down(ctx, volumes=False, version=2):
-    docker_compose_command(ctx, f"down {'--volumes' if volumes else ''}", version=version)
+    docker_compose_command(
+        ctx, f"down {'--volumes' if volumes else ''}", version=version
+    )
 
 
 @task

@@ -1,9 +1,9 @@
 from invoke import Collection
 
-from .kafka_producers import kafka_collection
 from .build import build_collection
 from .clean import clean_collection
 from .docker_compose import docker_compose_collection
+from .kafka_producers import kafka_collection
 
 ns = Collection()
 ns.add_collection(kafka_collection, name="kafka_producers")

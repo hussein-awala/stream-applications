@@ -1,11 +1,9 @@
-from invoke import task, Collection
+from invoke import Collection, task
 
 from .utils import clean_java_lib
 
 
-@task(help={
-    "project-name": "The name of the project you want to clean"
-})
+@task(help={"project-name": "The name of the project you want to clean"})
 def clean_java(ctx, project_name):
     clean_java_lib(ctx, project_name)
 

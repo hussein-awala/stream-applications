@@ -1,7 +1,7 @@
-from invoke import task, Collection
+from invoke import Collection, task
 
-from .utils import run_java_lib
 from .build import build_kafka_producers
+from .utils import run_java_lib
 
 
 @task()

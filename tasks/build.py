@@ -1,11 +1,9 @@
-from invoke import task, Collection
+from invoke import Collection, task
 
 from .utils import build_java_lib
 
 
-@task(help={
-    "project-name": "The name of the project you want to build"
-})
+@task(help={"project-name": "The name of the project you want to build"})
 def build_java(ctx, project_name):
     build_java_lib(ctx, project_name)
 
