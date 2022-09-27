@@ -1,21 +1,38 @@
-from os.path import join
+from pathlib import Path
 
 
-def build_java_lib(ctx, project_name):
-    root_project_path = join(get_project_dir(ctx), "stream-apps")
-    ctx.run(f"cd {root_project_path} && ./gradlew :{project_name}:shadowJar")
+def gradle_task(ctx, project_name, task, args):
+    root_project_path = get_project_dir(ctx).joinpath("stream-apps")
+    ctx.run(f"cd {root_project_path} && ./gradlew :{project_name}:{task} {args}")
 
 
-def clean_java_lib(ctx, project_name):
-    root_project_path = join(get_project_dir(ctx), "stream-apps")
-    ctx.run(f"cd {root_project_path} && ./gradlew :{project_name}:clean")
+def build_java_lib(ctx, project_name, args=""):
+    gradle_task(ctx=ctx, project_name=project_name, task="shadowJar", args=args)
+
+
+def clean_java_lib(ctx, project_name, args=""):
+    gradle_task(ctx=ctx, project_name=project_name, task="clean", args=args)
 
 
 def run_java_lib(ctx, project_name, main_class):
-    root_project_path = join(get_project_dir(ctx), "stream-apps")
-    jar_path = join(root_project_path, project_name, f"build/libs/{project_name}-all.jar")
+    root_project_path = get_project_dir(ctx).joinpath("stream-apps")
+    jar_path = root_project_path.joinpath(project_name, "build/libs", f"{project_name}-all.jar")
     ctx.run(f"java -cp {jar_path} {main_class}")
 
 
-def get_project_dir(ctx):
-    return ctx.run("git rev-parse --show-toplevel").stdout.strip()
+def get_project_dir(ctx) -> Path:
+    return Path(ctx.run("git rev-parse --show-toplevel").stdout.strip())
+
+
+def docker_compose_command(ctx, command, version=2):
+    docker_compose_folder_path = get_project_dir(ctx).joinpath("docker-compose")
+    services = [
+        "kafka",
+        "minio",
+        "hive"
+    ]
+    compose_cmd = "docker compose" if version == 2 else "docker-compose"
+    ctx.run(
+        f"{compose_cmd} {' '.join([f'-f {docker_compose_folder_path.joinpath(service)}.yml' for service in services])}"
+        f" {command}"
+    )
