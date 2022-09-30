@@ -7,9 +7,9 @@ from .utils import docker_compose_command
 def up(ctx, version=2):
     services = [
         "hive-metastore",
-        "kafka-broker",
-        "kafka-schema-registry",
-        "kafka-control-center",
+        "broker",
+        "schema-registry",
+        "control-center",
         "minio",
     ]
     docker_compose_command(ctx, f"up -d {' '.join(services)}", version=version)

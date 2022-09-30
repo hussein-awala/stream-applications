@@ -1,7 +1,7 @@
 version: "3.9"
 services:
-  kafka-zookeeper:
-    image: confluentinc/cp-zookeeper:7.2.1
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.2.2
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -16,12 +16,12 @@ services:
       retries: 3
       start_period: 10s
 
-  kafka-broker:
-    image: confluentinc/cp-server:7.2.1
+  broker:
+    image: confluentinc/cp-server:7.2.2
     hostname: broker
     container_name: broker
     depends_on:
-      kafka-zookeeper:
+      zookeeper:
         condition: service_healthy
     ports:
       - "9092:9092"
@@ -52,12 +52,12 @@ services:
       retries: 3
       start_period: 10s
 
-  kafka-schema-registry:
-    image: confluentinc/cp-schema-registry:7.2.1
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.2.2
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
-      kafka-broker:
+      broker:
         condition: service_healthy
     ports:
       - "8081:8081"
@@ -72,22 +72,50 @@ services:
       retries: 3
       start_period: 5s
 
-  kafka-control-center:
-    image: confluentinc/cp-enterprise-control-center:7.2.1
+  reddit-connector:
+    image: my-connector
+    build:
+      context: ../reddit-kafka-connect
+      dockerfile: Dockerfile
+    hostname: reddit-connector
+    container_name: reddit-connector
+    depends_on:
+      broker:
+        condition: service_healthy
+      schema-registry:
+        condition: service_healthy
+      create-reddit-topics:
+        condition: service_completed_successfully
+    command: connect-standalone config/connect-standalone.properties config/reddit-connector.properties
+    ports:
+      - "8084:8083"
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:7.2.2
     hostname: control-center
     container_name: control-center
     depends_on:
-      kafka-broker:
+      broker:
         condition: service_healthy
-      kafka-schema-registry:
+      schema-registry:
         condition: service_healthy
+      reddit-connector:
+        condition: service_started
     ports:
       - "9021:9021"
     environment:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
+      CONTROL_CENTER_CONNECT_REDDIT_CLUSTER: 'reddit-connector:8083'
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+      CONTROL_CENTER_CONNECT_HEALTHCHECK_ENDPOINT: '/connectors'
       PORT: 9021
+
+  create-reddit-topics:
+    image: confluentinc/cp-kafka:7.2.2
+    depends_on:
+      broker:
+        condition: service_healthy
+    command: sh -c "kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic reddit-comments --replication-factor 1 --partitions 6 && kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic reddit-posts --replication-factor 1 --partitions 6"
