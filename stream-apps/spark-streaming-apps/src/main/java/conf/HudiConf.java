@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import org.apache.hudi.DataSourceWriteOptions;
-import org.apache.hudi.hive.MultiPartKeysValueExtractor;
-import org.apache.hudi.hive.NonPartitionedExtractor;
+import org.apache.hudi.keygen.ComplexKeyGenerator;
+import org.apache.hudi.keygen.NonpartitionedKeyGenerator;
 
 public class HudiConf {
 
@@ -28,9 +28,9 @@ public class HudiConf {
       Map<String, String> hudiTableOptions, String hudiTableDb, String partitionKeys) {
     String hivePartitionExtractorClass;
     if (Objects.equals(partitionKeys, "")) {
-      hivePartitionExtractorClass = NonPartitionedExtractor.class.getName();
+      hivePartitionExtractorClass = NonpartitionedKeyGenerator.class.getName();
     } else {
-      hivePartitionExtractorClass = MultiPartKeysValueExtractor.class.getName();
+      hivePartitionExtractorClass = ComplexKeyGenerator.class.getName();
     }
     hudiTableOptions.put("hoodie.datasource.hive_sync.enable", "true");
     hudiTableOptions.put("hoodie.datasource.hive_sync.mode", "hms");
