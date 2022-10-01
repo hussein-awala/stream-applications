@@ -1,4 +1,4 @@
-package spark.stream.runners.hudi;
+package spark_experiments.stream.runners.hudi;
 
 import conf.HudiConf;
 import conf.SparkConfBuilder;
@@ -12,7 +12,7 @@ import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.functions;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.apache.spark.sql.streaming.Trigger;
-import spark.stream.utils.StreamDatasetLoader;
+import spark.stream.dataset_loader.StreamDatasetLoader;
 
 public class JoinTables {
 

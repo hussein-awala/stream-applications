@@ -1,4 +1,4 @@
-package spark.stream.runners;
+package spark_experiments.stream.runners;
 
 import conf.SparkConfBuilder;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
@@ -9,7 +9,7 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.apache.spark.sql.streaming.Trigger;
-import spark.stream.utils.PowerConsumptionLoader;
+import spark_experiments.stream.dataset_loader.PowerConsumptionLoader;
 
 public class KafkaToParquet {
   public static void main(String[] args)

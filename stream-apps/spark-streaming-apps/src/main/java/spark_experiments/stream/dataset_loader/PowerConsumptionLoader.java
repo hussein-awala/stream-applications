@@ -1,4 +1,4 @@
-package spark.stream.utils;
+package spark_experiments.stream.dataset_loader;
 
 import static org.apache.spark.sql.functions.*;
 
@@ -7,6 +7,7 @@ import java.io.IOException;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
+import spark.stream.dataset_loader.StreamDatasetLoader;
 
 public class PowerConsumptionLoader {
   public static Dataset<Row> getDataset(SparkSession sparkSession)

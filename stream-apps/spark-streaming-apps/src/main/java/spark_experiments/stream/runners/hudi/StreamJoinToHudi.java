@@ -1,4 +1,4 @@
-package spark.stream.runners.hudi;
+package spark_experiments.stream.runners.hudi;
 
 import static org.apache.spark.sql.avro.functions.from_avro;
 import static org.apache.spark.sql.functions.expr;

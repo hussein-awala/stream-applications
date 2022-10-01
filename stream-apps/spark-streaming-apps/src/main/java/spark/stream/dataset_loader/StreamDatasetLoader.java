@@ -1,4 +1,4 @@
-package spark.stream.utils;
+package spark.stream.dataset_loader;
 
 import static org.apache.spark.sql.avro.functions.from_avro;
 import static org.apache.spark.sql.functions.*;

@@ -1,4 +1,4 @@
-package spark.stream.runners.hudi;
+package spark.stream.runners;
 
 import com.sampullara.cli.Args;
 import com.sampullara.cli.Argument;
@@ -14,7 +14,7 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.apache.spark.sql.streaming.Trigger;
-import spark.stream.utils.StreamDatasetLoader;
+import spark.stream.dataset_loader.StreamDatasetLoader;
 
 public class KafkaToHudi {
 
