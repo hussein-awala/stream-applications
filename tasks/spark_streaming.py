@@ -22,8 +22,10 @@ def run_stream_and_table_joiner(ctx):
 
 
 @task()
-def run_kafka_to_hudi(ctx):
-    run_java_lib(ctx, "spark-streaming-apps", "spark.stream.runners.hudi.KafkaToHudi")
+def run_kafka_to_hudi(ctx, args=""):
+    run_java_lib(
+        ctx, "spark-streaming-apps", "spark.stream.runners.hudi.KafkaToHudi", args=args
+    )
 
 
 spark_streaming_collection = Collection()

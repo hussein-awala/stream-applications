@@ -14,12 +14,12 @@ def clean_java_lib(ctx, project_name, args=""):
     gradle_task(ctx=ctx, project_name=project_name, task="clean", args=args)
 
 
-def run_java_lib(ctx, project_name, main_class):
+def run_java_lib(ctx, project_name, main_class, args=""):
     root_project_path = get_project_dir(ctx).joinpath("stream-apps")
     jar_path = root_project_path.joinpath(
         project_name, "build/libs", f"{project_name}-all.jar"
     )
-    ctx.run(f"java -cp {jar_path} {main_class}")
+    ctx.run(f"java -cp {jar_path} {main_class} {args}")
 
 
 def get_project_dir(ctx) -> Path:
