@@ -28,3 +28,7 @@ and it uses a postgres DB as a backend storage.
 ```shell
 invoke compose.up
 ```
+
+### Reddit kafka connector
+A kafka connector used to call the reddit API and read posts and comments for a list of subreddits, then write them to
+two kafka topics. [Here](reddit/README.md) is the documentation of this service.
