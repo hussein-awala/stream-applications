@@ -4,7 +4,7 @@ from .utils import docker_compose_command
 
 
 @task
-def up(ctx, version=2):
+def up(ctx, version=2, extra_services=None):
     services = [
         "hive-metastore",
         "broker",
@@ -12,6 +12,8 @@ def up(ctx, version=2):
         "control-center",
         "minio",
     ]
+    if extra_services is not None:
+        services += extra_services
     docker_compose_command(ctx, f"up -d {' '.join(services)}", version=version)
 
 

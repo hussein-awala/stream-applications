@@ -28,7 +28,7 @@ def get_project_dir(ctx) -> Path:
 
 def docker_compose_command(ctx, command, version=2):
     docker_compose_folder_path = get_project_dir(ctx).joinpath("docker-compose")
-    compose_files = ["kafka", "minio", "hive"]
+    compose_files = ["kafka", "minio", "hive", "reddit"]
     compose_cmd = "docker compose" if version == 2 else "docker-compose"
     ctx.run(
         f"{compose_cmd} {' '.join([f'-f {docker_compose_folder_path.joinpath(file)}.yml' for file in compose_files])}"

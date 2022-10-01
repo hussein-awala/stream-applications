@@ -72,23 +72,6 @@ services:
       retries: 3
       start_period: 5s
 
-  reddit-connector:
-    image: my-connector
-    build:
-      context: ../reddit-kafka-connect
-      dockerfile: Dockerfile
-    hostname: reddit-connector
-    container_name: reddit-connector
-    depends_on:
-      broker:
-        condition: service_healthy
-      schema-registry:
-        condition: service_healthy
-      create-reddit-topics:
-        condition: service_completed_successfully
-    command: connect-standalone config/connect-standalone.properties config/reddit-connector.properties
-    ports:
-      - "8084:8083"
   control-center:
     image: confluentinc/cp-enterprise-control-center:7.2.2
     hostname: control-center
@@ -98,13 +81,10 @@ services:
         condition: service_healthy
       schema-registry:
         condition: service_healthy
-      reddit-connector:
-        condition: service_started
     ports:
       - "9021:9021"
     environment:
       CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:29092'
-      CONTROL_CENTER_CONNECT_REDDIT_CLUSTER: 'reddit-connector:8083'
       CONTROL_CENTER_SCHEMA_REGISTRY_URL: "http://schema-registry:8081"
       CONTROL_CENTER_REPLICATION_FACTOR: 1
       CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
@@ -112,10 +92,3 @@ services:
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       CONTROL_CENTER_CONNECT_HEALTHCHECK_ENDPOINT: '/connectors'
       PORT: 9021
-
-  create-reddit-topics:
-    image: confluentinc/cp-kafka:7.2.2
-    depends_on:
-      broker:
-        condition: service_healthy
-    command: sh -c "kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic reddit-comments --replication-factor 1 --partitions 6 && kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic reddit-posts --replication-factor 1 --partitions 6"

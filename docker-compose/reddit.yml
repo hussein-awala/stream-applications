@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  reddit-connector:
+    image: reddit-connector:latest
+    build:
+      context: ../reddit/reddit-kafka-connect
+      dockerfile: Dockerfile
+    hostname: reddit-connector
+    container_name: reddit-connector
+    depends_on:
+      broker:
+        condition: service_healthy
+      create-reddit-topics:
+        condition: service_completed_successfully
+    command: connect-standalone config/connect-standalone.properties config/reddit-connector.properties
+    ports:
+      - "8084:8083"
+    volumes:
+      - reddit-connector-data:/mnt
+
+  create-reddit-topics:
+    image: confluentinc/cp-kafka:7.2.2
+    depends_on:
+      broker:
+        condition: service_healthy
+    command: sh -c "kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic reddit-comments --replication-factor 1 --partitions 6 && kafka-topics --bootstrap-server broker:29092 --create --if-not-exists --topic reddit-posts --replication-factor 1 --partitions 6"
+
+volumes:
+  reddit-connector-data: {}
