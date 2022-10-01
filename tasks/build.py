@@ -14,7 +14,7 @@ def build_kafka_producers(ctx):
 
 
 @task
-def build_kstream_apps(ctx):
+def build_kstreams_apps(ctx):
     build_java(ctx, "kstream-apps")
 
 
@@ -26,13 +26,13 @@ def build_spark_streaming_apps(ctx):
 @task
 def build_all(ctx):
     build_kafka_producers(ctx)
-    build_kstream_apps(ctx)
+    build_kstreams_apps(ctx)
     build_spark_streaming_apps(ctx)
 
 
 build_collection = Collection()
 build_collection.add_task(build_java, name="java")
 build_collection.add_task(build_kafka_producers, name="kafka_producers")
-build_collection.add_task(build_kstream_apps, name="kstream_apps")
+build_collection.add_task(build_kstreams_apps, name="kstreams_apps")
 build_collection.add_task(build_spark_streaming_apps, name="spark_streaming_apps")
 build_collection.add_task(build_all, name="all")

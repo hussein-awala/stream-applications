@@ -14,7 +14,7 @@ def clean_kafka_producers(ctx):
 
 
 @task
-def clean_kstream_apps(ctx):
+def clean_kstreams_apps(ctx):
     clean_java(ctx, "kstream-apps")
 
 
@@ -26,13 +26,13 @@ def clean_spark_streaming_apps(ctx):
 @task
 def clean_all(ctx):
     clean_kafka_producers(ctx)
-    clean_kstream_apps(ctx)
+    clean_kstreams_apps(ctx)
     clean_spark_streaming_apps(ctx)
 
 
 clean_collection = Collection()
 clean_collection.add_task(clean_java, name="java")
 clean_collection.add_task(clean_kafka_producers, name="kafka_producers")
-clean_collection.add_task(clean_kstream_apps, name="kstream_apps")
+clean_collection.add_task(clean_kstreams_apps, name="kstreams_apps")
 clean_collection.add_task(clean_spark_streaming_apps, name="spark_streaming_apps")
 clean_collection.add_task(clean_all, name="all")
