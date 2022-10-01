@@ -8,6 +8,10 @@
 ```shell
 pip install -r requirememts.txt
 ```
+- Grants direnv to load the given .envrc:
+```shell
+direnv allow
+```
 ## Docker compose stack
 
 ### Description
@@ -32,3 +36,10 @@ invoke compose.up
 ### Reddit kafka connector
 A kafka connector used to call the reddit API and read posts and comments for a list of subreddits, then write them to
 two kafka topics. [Here](reddit/README.md) is the documentation of this service.
+
+
+## Stream Apps
+It's a java project contains 3 modules:
+- kafka-producers: a module used to fake kafka messages to test the different services
+- kstreams-apps: a module contains some applications based on confluent kstreams
+- spark-streaming-apps: a module contains some applications based on spark structured streaming

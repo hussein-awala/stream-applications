@@ -17,3 +17,18 @@ if they are not running.
 ```shell
 invoke reddit.run
 ```
+
+## Storing reddit data in Hudi tables on S3
+In this project, reddit posts and comments are exported to S3 (datalake/lakehouse) and stored as
+[apache Hudi](https://hudi.apache.org/) tables, this export allows us to query the data using spark (and other tools),
+in order to apply some OLAP queries on this data.
+
+### Run the spark structured streaming app
+```shell
+# Build spark-streaming module
+invoke spark-streaming.build
+# Run kafka-to-hudi main to export reddit-posts topic to Hudi table reddit_posts
+inv spark-streaming.kafka-to-hudi --args="-topicName reddit-posts -hudiTableName reddit_posts -hudiKeys id -hudiPrecombineKey kafka_timestamp -partitionsKeys subreddit -trigger 120 -schemaPath ${project_path}/reddit/spark-schema/reddit-posts-spark-schema.json"
+# Run kafka-to-hudi main to export reddit-comments topic to Hudi table reddit_comments
+inv spark-streaming.kafka-to-hudi --args="-topicName reddit-comments -hudiTableName reddit_comments -hudiKeys id -hudiPrecombineKey kafka_timestamp -partitionsKeys subreddit -trigger 120 -schemaPath ${project_path}/reddit/spark-schema/reddit-comments-spark-schema.json"
+```
