@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import org.apache.hudi.DataSourceWriteOptions;
+import org.apache.hudi.hive.MultiPartKeysValueExtractor;
+import org.apache.hudi.hive.NonPartitionedExtractor;
 import org.apache.hudi.keygen.ComplexKeyGenerator;
 import org.apache.hudi.keygen.NonpartitionedKeyGenerator;
 
@@ -21,6 +23,13 @@ public class HudiConf {
     hudiTableOptions.put(DataSourceWriteOptions.TABLE_NAME().key(), hudiTableName);
     hudiTableOptions.put("hoodie.table.name", hudiTableName);
     hudiTableOptions.put("hoodie.parquet.compression.codec", "zstd");
+    String hudiKeyGeneratorClass;
+    if (Objects.equals(keyFields, "")) {
+      hudiKeyGeneratorClass = NonpartitionedKeyGenerator.class.getName();
+    } else {
+      hudiKeyGeneratorClass = ComplexKeyGenerator.class.getName();
+    }
+    hudiTableOptions.put("hoodie.datasource.write.keygenerator.class", hudiKeyGeneratorClass);
     return hudiTableOptions;
   }
 
@@ -28,18 +37,19 @@ public class HudiConf {
       Map<String, String> hudiTableOptions, String hudiTableDb, String partitionKeys) {
     String hivePartitionExtractorClass;
     if (Objects.equals(partitionKeys, "")) {
-      hivePartitionExtractorClass = NonpartitionedKeyGenerator.class.getName();
+      hivePartitionExtractorClass = NonPartitionedExtractor.class.getName();
     } else {
-      hivePartitionExtractorClass = ComplexKeyGenerator.class.getName();
+      hivePartitionExtractorClass = MultiPartKeysValueExtractor.class.getName();
     }
     hudiTableOptions.put("hoodie.datasource.hive_sync.enable", "true");
     hudiTableOptions.put("hoodie.datasource.hive_sync.mode", "hms");
+    hudiTableOptions.put("hoodie.datasource.hive_sync.partition_fields", partitionKeys);
     hudiTableOptions.put("hoodie.datasource.hive_sync.use_jdbc", "false");
     hudiTableOptions.put("hoodie.datasource.hive_sync.metastore.uris", "thrift://localhost:9083");
     hudiTableOptions.put("hoodie.datasource.hive_sync.auto_create_database", "true");
     hudiTableOptions.put("hoodie.datasource.hive_sync.database", hudiTableDb);
     hudiTableOptions.put(
-        DataSourceWriteOptions.HIVE_PARTITION_EXTRACTOR_CLASS().key(), hivePartitionExtractorClass);
+        "hoodie.datasource.hive_sync.partition_extractor_class", hivePartitionExtractorClass);
   }
 
   public static Map<String, String> createHudiConf(
