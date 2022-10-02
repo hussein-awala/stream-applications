@@ -11,6 +11,14 @@ def run_kafka_to_hudi(ctx, args=""):
     )
 
 
+@task()
+def run_db_creator(ctx, args=""):
+    run_java_lib(
+        ctx, "spark-streaming-apps", "spark.utils.HiveDatabasesCreator", args=args
+    )
+
+
 spark_streaming_collection = Collection()
 spark_streaming_collection.add_task(build_spark_streaming_apps, name="build")
 spark_streaming_collection.add_task(run_kafka_to_hudi, name="kafka_to_hudi")
+spark_streaming_collection.add_task(run_db_creator, name="create_db")
