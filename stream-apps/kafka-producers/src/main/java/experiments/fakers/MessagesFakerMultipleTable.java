@@ -1,4 +1,4 @@
-package fakers;
+package experiments.fakers;
 
 public class MessagesFakerMultipleTable {
   public static void main(String[] args) {

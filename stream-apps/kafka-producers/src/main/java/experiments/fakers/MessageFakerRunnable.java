@@ -1,4 +1,4 @@
-package fakers;
+package experiments.fakers;
 
 import io.confluent.avro.random.generator.Generator;
 import java.io.IOException;

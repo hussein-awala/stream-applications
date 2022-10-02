@@ -1,4 +1,4 @@
-package fakers;
+package experiments.fakers;
 
 public class MessagesFaker {
   public static void main(String[] args) {
