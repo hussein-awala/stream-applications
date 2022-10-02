@@ -24,6 +24,9 @@ public class KafkaToHudi {
   @Argument(alias = "h", description = "The Hudi table name", required = true)
   private String hudiTableName;
 
+  @Argument(description = "The hive database name to sync with")
+  private String hiveDatabaseName;
+
   @Argument(alias = "k", description = "The Hudi table name keys", required = true)
   private String hudiKeys;
 
@@ -72,6 +75,9 @@ public class KafkaToHudi {
             kafkaToHudi.hudiKeys,
             kafkaToHudi.hudiPrecombineKey,
             kafkaToHudi.partitionsKeys);
+    if (kafkaToHudi.hiveDatabaseName != null)
+      HudiConf.addHiveSyncConf(
+          hudiTableOptions, kafkaToHudi.hiveDatabaseName, kafkaToHudi.partitionsKeys);
 
     int trigger = (kafkaToHudi.trigger == null) ? 120 : kafkaToHudi.trigger;
 
