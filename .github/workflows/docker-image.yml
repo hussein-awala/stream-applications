@@ -1,0 +1,29 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-hive2-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - name: Build hive2 Docker image
+        run: invoke compose.cmd "build hive-metastore"
+  build-reddit-connector-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - name: Build reddit connector Docker image
+        run: invoke compose.cmd "build reddit-connector"
