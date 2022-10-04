@@ -1,32 +1,53 @@
 package utils;
 
-import java.lang.reflect.Field;
-import java.util.List;
+import java.time.Duration;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.ListTopicsResult;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.StringDeserializer;
+import org.apache.kafka.common.serialization.StringSerializer;
+import org.junit.jupiter.api.extension.AfterAllCallback;
 import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.platform.commons.support.AnnotationSupport;
 import org.testcontainers.containers.KafkaContainer;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.deser.std.StringDeserializer;
-import org.testcontainers.shaded.com.fasterxml.jackson.databind.ser.std.StringSerializer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
+import utils.fields.KafkaAdminClientField;
+import utils.fields.KafkaConsumerField;
+import utils.fields.KafkaContainerField;
+import utils.fields.KafkaProducerField;
 
-public class KafkaTestExtension implements BeforeEachCallback, AfterEachCallback {
+public class KafkaTestExtension extends AbstractTestExtension
+    implements BeforeEachCallback, AfterEachCallback, BeforeAllCallback, AfterAllCallback {
 
   private KafkaContainer kafkaContainer;
+
+  private AdminClient kafkaAdminClient;
 
   private KafkaConsumer kafkaConsumer;
 
   private KafkaProducer kafkaProducer;
 
   @Override
-  public void beforeEach(ExtensionContext context) throws Exception {
-    kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.2.2"));
+  public void beforeAll(ExtensionContext context) {
+    kafkaContainer =
+        new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.2.2"))
+            .withEmbeddedZookeeper()
+            .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(30)));
+
+    kafkaContainer.start();
+
+    Properties adminProperties = new Properties();
+    adminProperties.put(
+        ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaContainer.getBootstrapServers());
+    kafkaAdminClient = AdminClient.create(adminProperties);
 
     Properties consumerProperties = new Properties();
     consumerProperties.put(
@@ -44,38 +65,26 @@ public class KafkaTestExtension implements BeforeEachCallback, AfterEachCallback
     producerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     producerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
     kafkaProducer = new KafkaProducer(producerProperties);
-
-    setFieldsTo(context);
   }
 
   @Override
-  public void afterEach(ExtensionContext context) {
-    kafkaContainer.stop();
+  public void afterAll(ExtensionContext context) {
     kafkaConsumer.close();
     kafkaProducer.close();
+    kafkaContainer.stop();
   }
 
-  private void setFieldsTo(ExtensionContext extensionContext) throws IllegalAccessException {
-    Object testInstance = extensionContext.getRequiredTestInstance();
-    List<Field> fieldsToInject =
-        AnnotationSupport.findAnnotatedFields(
-            extensionContext.getRequiredTestClass(), KafkaContainerField.class);
-    for (Field field : fieldsToInject) {
-      field.set(testInstance, kafkaContainer);
-    }
+  @Override
+  public void beforeEach(ExtensionContext context) throws IllegalAccessException {
+    patchField(context, KafkaContainerField.class, kafkaContainer);
+    patchField(context, KafkaAdminClientField.class, kafkaAdminClient);
+    patchField(context, KafkaConsumerField.class, kafkaConsumer);
+    patchField(context, KafkaProducerField.class, kafkaProducer);
+  }
 
-    fieldsToInject =
-        AnnotationSupport.findAnnotatedFields(
-            extensionContext.getRequiredTestClass(), KafkaConsumerField.class);
-    for (Field field : fieldsToInject) {
-      field.set(testInstance, kafkaConsumer);
-    }
-
-    fieldsToInject =
-        AnnotationSupport.findAnnotatedFields(
-            extensionContext.getRequiredTestClass(), KafkaProducerField.class);
-    for (Field field : fieldsToInject) {
-      field.set(testInstance, kafkaProducer);
-    }
+  @Override
+  public void afterEach(ExtensionContext context) throws ExecutionException, InterruptedException {
+    ListTopicsResult listTopicsResult = kafkaAdminClient.listTopics();
+    kafkaAdminClient.deleteTopics(listTopicsResult.names().get()).all().get();
   }
 }

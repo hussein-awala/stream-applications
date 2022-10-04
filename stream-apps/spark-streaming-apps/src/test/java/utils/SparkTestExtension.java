@@ -1,16 +1,15 @@
 package utils;
 
-import java.lang.reflect.Field;
-import java.util.List;
 import java.util.UUID;
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.SparkSession;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.platform.commons.support.AnnotationSupport;
+import utils.fields.SparkSessionField;
 
-public class SparkTestExtension implements BeforeEachCallback, AfterEachCallback {
+public class SparkTestExtension extends AbstractTestExtension
+    implements BeforeEachCallback, AfterEachCallback {
 
   private static SparkSession sparkSession;
 
@@ -31,7 +30,7 @@ public class SparkTestExtension implements BeforeEachCallback, AfterEachCallback
     }
     setHasInitSpark(true);
 
-    setSparkTo(extensionContext);
+    patchField(extensionContext, SparkSessionField.class, sparkSession);
   }
 
   @Override
@@ -57,15 +56,5 @@ public class SparkTestExtension implements BeforeEachCallback, AfterEachCallback
 
   private void stopSpark() {
     sparkSession.stop();
-  }
-
-  private void setSparkTo(ExtensionContext extensionContext) throws IllegalAccessException {
-    Object testInstance = extensionContext.getRequiredTestInstance();
-    List<Field> fieldsToInject =
-        AnnotationSupport.findAnnotatedFields(
-            extensionContext.getRequiredTestClass(), SparkSessionField.class);
-    for (Field field : fieldsToInject) {
-      field.set(testInstance, sparkSession);
-    }
   }
 }
