@@ -49,7 +49,17 @@ public class SparkTestExtension extends AbstractTestExtension
             .set("spark.ui.enabled", "false")
             .set("spark.app.id", UUID.randomUUID().toString())
             .set("spark.driver.host", "localhost")
-            .set("spark.sql.shuffle.partitions", "1");
+            .set("spark.sql.shuffle.partitions", "1")
+            // S3 conf
+            .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+            .set("spark.hadoop.fs.AbstractFileSystem.s3a.impl", "org.apache.hadoop.fs.s3a.S3A")
+            .set("spark.hadoop.fs.s3a.path.style.access", "true")
+            .set("spark.hadoop.fs.s3a.endpoint", "http://localhost:19000")
+            .set(
+                "spark.hadoop.fs.s3a.aws.credentials.provider",
+                "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
+            .set("spark.hadoop.fs.s3a.access.key", "minio_root")
+            .set("spark.hadoop.fs.s3a.secret.key", "minio_pass");
 
     setSparkSession(SparkSession.builder().config(sparkConf).getOrCreate());
   }
