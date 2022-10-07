@@ -13,7 +13,7 @@ public class PowerConsumptionLoader {
   public static Dataset<Row> getDataset(SparkSession sparkSession)
       throws RestClientException, IOException {
     String topicName = "power-consumption";
-    Dataset<Row> df = StreamDatasetLoader.getDataset(sparkSession, topicName);
+    Dataset<Row> df = new StreamDatasetLoader().getDataset(sparkSession, topicName);
     return df.drop("kafka_partition", "kafka_offset", "kafka_key")
         .withColumn(
             "Date",

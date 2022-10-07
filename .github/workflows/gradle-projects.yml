@@ -27,9 +27,9 @@ jobs:
         with:
           python-version: '3.10'
       - run: pip install -r requirements.txt
-      - name: Build kafka producers app
+      - name: Build kstreams apps
         run: invoke build.kstreams-apps
-  build-spark-streaming-apps:
+  build-and-test-spark-streaming-apps:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -38,5 +38,7 @@ jobs:
         with:
           python-version: '3.10'
       - run: pip install -r requirements.txt
-      - name: Build kafka producers app
+      - name: Build spark streaming apps
         run: invoke build.spark-streaming-apps
+      - name: Test spark streaming apps
+        run: invoke spark-streaming.test

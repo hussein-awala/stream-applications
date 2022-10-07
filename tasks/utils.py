@@ -22,6 +22,10 @@ def run_java_lib(ctx, project_name, main_class, args=""):
     ctx.run(f"java -cp {jar_path} {main_class} {args}")
 
 
+def test_java_lib(ctx, project_name):
+    gradle_task(ctx=ctx, project_name=project_name, task="clean test", args="")
+
+
 def get_project_dir(ctx) -> Path:
     return Path(ctx.run("git rev-parse --show-toplevel").stdout.strip())
 
