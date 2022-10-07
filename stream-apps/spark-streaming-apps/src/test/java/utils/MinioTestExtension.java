@@ -15,7 +15,7 @@ import org.testcontainers.containers.wait.strategy.Wait;
 import utils.fields.MinioClientField;
 
 public class MinioTestExtension extends AbstractTestExtension
-    implements BeforeEachCallback, AfterEachCallback, BeforeAllCallback, AfterAllCallback {
+    implements BeforeEachCallback, AfterEachCallback {
   private final String accessKey = "minio_root";
 
   private final String secretKey = "minio_pass";
@@ -29,7 +29,7 @@ public class MinioTestExtension extends AbstractTestExtension
   private GenericContainer minioContainer;
 
   @Override
-  public void beforeAll(ExtensionContext extensionContext) {
+  public void beforeEach(ExtensionContext extensionContext) throws IllegalAccessException {
     minioContainer =
         new GenericContainer("minio/minio")
             .withExposedPorts(9000, 9001)
@@ -53,21 +53,13 @@ public class MinioTestExtension extends AbstractTestExtension
                     String.format("%s:19000", minioContainer.getHost()), region))
             .withPathStyleAccessEnabled(true)
             .build();
-  }
-
-  @Override
-  public void afterAll(ExtensionContext context) {
-    minioContainer.stop();
-  }
-
-  @Override
-  public void beforeEach(ExtensionContext extensionContext) throws IllegalAccessException {
     minioClient.createBucket("test-bucket");
     patchField(extensionContext, MinioClientField.class, minioClient);
   }
 
   @Override
   public void afterEach(ExtensionContext context) {
-    minioClient.deleteBucket("test-bucket");
+    minioContainer.stop();
+    ;
   }
 }
