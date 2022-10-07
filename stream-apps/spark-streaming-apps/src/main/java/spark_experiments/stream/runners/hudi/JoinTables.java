@@ -40,8 +40,8 @@ public class JoinTables {
             hudiTableName, tableKey, precombineKey, partitionKeys, writeOperation);
     HudiConf.addHiveSyncConf(hudiTableOptions, hudiDbName, partitionKeys);
 
-    Dataset<Row> table1Df = StreamDatasetLoader.getDataset(spark, "table1");
-    Dataset<Row> table2Df = StreamDatasetLoader.getDataset(spark, "table2");
+    Dataset<Row> table1Df = new StreamDatasetLoader().getDataset(spark, "table1");
+    Dataset<Row> table2Df = new StreamDatasetLoader().getDataset(spark, "table2");
     Dataset<Row> joinedDf =
         table2Df
             .as("table2")

@@ -53,8 +53,8 @@ public class JoinTable2WithHudiTable {
             hudiTableNameRes, tableKeyRes, precombineKeyRes, partitionKeysRes, writeOperationRes);
     HudiConf.addHiveSyncConf(hudiTableOptionsRes, hudiDbNameRes, partitionKeysRes);
 
-    Dataset<Row> table1Df = StreamDatasetLoader.getDataset(spark, "table1");
-    Dataset<Row> table2Df = StreamDatasetLoader.getDataset(spark, "table2");
+    Dataset<Row> table1Df = new StreamDatasetLoader().getDataset(spark, "table1");
+    Dataset<Row> table2Df = new StreamDatasetLoader().getDataset(spark, "table2");
 
     table1Df
         .writeStream()

@@ -25,7 +25,7 @@ public class UpsertKafkaToHudi {
 
     SparkSession spark = SparkSession.builder().config(sparkConf).enableHiveSupport().getOrCreate();
 
-    Dataset<Row> df = StreamDatasetLoader.getDataset(spark, "joined-tables");
+    Dataset<Row> df = new StreamDatasetLoader().getDataset(spark, "joined-tables");
 
     String hudiTableName = "joined_tables_stream";
     String hudiDbName = "hudi_stream";

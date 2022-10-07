@@ -63,8 +63,8 @@ public class KafkaToHudi {
     boolean deserializeAvro = kafkaToHudi.deserializeAvro != null && kafkaToHudi.deserializeAvro;
 
     Dataset<Row> df =
-        StreamDatasetLoader.getDataset(
-            spark, kafkaToHudi.topicName, deserializeAvro, kafkaToHudi.schemaPath);
+        new StreamDatasetLoader()
+            .getDataset(spark, kafkaToHudi.topicName, deserializeAvro, kafkaToHudi.schemaPath);
 
     String hudiTableName = kafkaToHudi.hudiTableName;
     String hudiTablePath = String.format("s3a://spark/data/hudi/%s", hudiTableName);
