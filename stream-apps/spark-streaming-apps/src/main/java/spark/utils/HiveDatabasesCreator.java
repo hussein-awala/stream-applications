@@ -12,6 +12,11 @@ public class HiveDatabasesCreator {
   @Argument(alias = "d", description = "Hive database to create", required = true)
   private String hiveDatabaseName;
 
+  public void createDatabase(String hiveDatabaseName, SparkSession sparkSession) {
+    sparkSession.sql(String.format("CREATE DATABASE IF NOT EXISTS %s", hiveDatabaseName)).collect();
+    sparkSession.sql("SHOW DATABASES").show(100);
+  }
+
   public static void main(String[] args) {
 
     HiveDatabasesCreator hiveDatabasesCreator = new HiveDatabasesCreator();
@@ -25,11 +30,7 @@ public class HiveDatabasesCreator {
             .addHudiConf()
             .build();
     SparkSession spark = SparkSession.builder().config(sparkConf).enableHiveSupport().getOrCreate();
-    spark
-        .sql(
-            String.format(
-                "CREATE DATABASE IF NOT EXISTS %s", hiveDatabasesCreator.hiveDatabaseName))
-        .collect();
-    spark.sql("SHOW DATABASES").show(100);
+
+    hiveDatabasesCreator.createDatabase(hiveDatabasesCreator.hiveDatabaseName, spark);
   }
 }
