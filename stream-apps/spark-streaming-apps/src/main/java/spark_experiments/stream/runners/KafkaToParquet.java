@@ -1,6 +1,6 @@
 package spark_experiments.stream.runners;
 
-import conf.SparkConfBuilder;
+import com.stream.apps.lib.conf.SparkConfBuilder;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import java.io.IOException;
 import org.apache.spark.SparkConf;

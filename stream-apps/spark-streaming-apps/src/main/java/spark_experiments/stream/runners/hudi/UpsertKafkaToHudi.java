@@ -1,7 +1,8 @@
 package spark_experiments.stream.runners.hudi;
 
-import conf.HudiConf;
-import conf.SparkConfBuilder;
+import com.stream.apps.lib.conf.HudiConf;
+import com.stream.apps.lib.conf.SparkConfBuilder;
+import com.stream.apps.lib.spark.stream.dataset_loader.StreamDatasetLoader;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import java.io.IOException;
 import java.util.Map;
@@ -11,7 +12,6 @@ import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.streaming.StreamingQueryException;
 import org.apache.spark.sql.streaming.Trigger;
-import spark.stream.dataset_loader.StreamDatasetLoader;
 
 public class UpsertKafkaToHudi {
   public static void main(String[] args)

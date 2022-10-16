@@ -2,3 +2,5 @@ rootProject.name = 'stream-apps'
 include('spark-streaming-apps')
 include('kstreams-apps')
 include('kafka-producers')
+include('kafka-to-kudu')
+include 'lib'

@@ -1,7 +1,7 @@
 package spark_experiments.batch.runners;
 
-import conf.HudiConf;
-import conf.SparkConfBuilder;
+import com.stream.apps.lib.conf.HudiConf;
+import com.stream.apps.lib.conf.SparkConfBuilder;
 import java.util.Map;
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.Dataset;
