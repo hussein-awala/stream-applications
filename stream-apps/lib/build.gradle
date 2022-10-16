@@ -44,8 +44,6 @@ dependencies {
     // cli
     implementation group: 'com.github.spullara.cli-parser', name: 'cli-parser', version: '1.1.6'
 
-    implementation project(":lib")
-
     // testing modules
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
     testImplementation "org.testcontainers:junit-jupiter:1.17.4"

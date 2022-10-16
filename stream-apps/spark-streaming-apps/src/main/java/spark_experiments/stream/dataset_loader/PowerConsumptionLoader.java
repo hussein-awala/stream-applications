@@ -2,12 +2,12 @@ package spark_experiments.stream.dataset_loader;
 
 import static org.apache.spark.sql.functions.*;
 
+import com.stream.apps.lib.spark.stream.dataset_loader.StreamDatasetLoader;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import java.io.IOException;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
-import spark.stream.dataset_loader.StreamDatasetLoader;
 
 public class PowerConsumptionLoader {
   public static Dataset<Row> getDataset(SparkSession sparkSession)

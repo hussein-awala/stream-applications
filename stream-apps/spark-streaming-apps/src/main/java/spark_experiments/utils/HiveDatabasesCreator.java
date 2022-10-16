@@ -1,6 +1,6 @@
 package spark_experiments.utils;
 
-import conf.SparkConfBuilder;
+import com.stream.apps.lib.conf.SparkConfBuilder;
 import org.apache.spark.SparkConf;
 import org.apache.spark.sql.SparkSession;
 

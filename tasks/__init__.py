@@ -7,6 +7,7 @@ from .kafka_producers import kafka_collection
 from .kstreams import kstreams_collection
 from .reddit import reddit_collection
 from .spark_streaming import spark_streaming_collection
+from .stream_apps_lib import stream_apps_lib_collection
 
 ns = Collection()
 ns.add_collection(kafka_collection, name="kafka_producers")
@@ -16,3 +17,4 @@ ns.add_collection(docker_compose_collection, name="compose")
 ns.add_collection(kstreams_collection, name="kstreams")
 ns.add_collection(spark_streaming_collection, name="spark_streaming")
 ns.add_collection(reddit_collection, name="reddit")
+ns.add_collection(stream_apps_lib_collection, name="stream_apps_lib")

@@ -3,8 +3,8 @@ package spark_experiments.stream.runners.hudi;
 import static org.apache.spark.sql.avro.functions.from_avro;
 import static org.apache.spark.sql.functions.expr;
 
-import conf.HudiConf;
-import conf.SparkConfBuilder;
+import com.stream.apps.lib.conf.HudiConf;
+import com.stream.apps.lib.conf.SparkConfBuilder;
 import io.confluent.kafka.schemaregistry.client.rest.RestService;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import java.io.IOException;
