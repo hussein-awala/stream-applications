@@ -24,7 +24,7 @@ dependencies {
     implementation group: "com.opencsv", name: "opencsv", version: "5.3"
 
     // junit for testing
-    testImplementation "junit:junit:4.13"
+    testImplementation "junit:junit:4.13.2"
     // confluent for testing
     testImplementation group: "org.apache.kafka", name: "kafka-streams-test-utils", version: "3.1.0"
 }
