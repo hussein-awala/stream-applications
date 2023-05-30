@@ -21,7 +21,7 @@ dependencies {
     implementation group: "org.apache.kafka", name: "kafka-streams", version: "3.1.0"
 
     // csv
-    implementation group: "com.opencsv", name: "opencsv", version: "5.3"
+    implementation group: "com.opencsv", name: "opencsv", version: "5.7.1"
 
     // junit for testing
     testImplementation "junit:junit:4.13"
