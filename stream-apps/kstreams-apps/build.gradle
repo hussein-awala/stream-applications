@@ -17,7 +17,7 @@ dependencies {
     implementation group: "io.confluent", name: "kafka-schema-registry-client", version: "5.3.0"
     implementation group: "io.confluent", name: "kafka-avro-serializer", version: "5.3.0"
     implementation group: 'io.confluent', name: 'kafka-streams-avro-serde', version: '7.2.1'
-    implementation group: "org.apache.kafka", name: "kafka-streams", version: "3.1.0"
+    implementation group: "org.apache.kafka", name: "kafka-streams", version: "7.4.1-ce"
     // logging
     implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.19.0'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
@@ -26,7 +26,7 @@ dependencies {
     // junit for testing
     testImplementation group: "junit", name: "junit", version: "4.13.2"
     // confluent for testing
-    testImplementation group: "org.apache.kafka", name: "kafka-streams-test-utils", version: "3.1.0"
+    testImplementation group: "org.apache.kafka", name: "kafka-streams-test-utils", version: "7.4.1-ce"
 }
 
 shadowJar {
